@@ -1,0 +1,70 @@
+{
+  "description": "Example requests for the QR Code Generation API",
+  "endpoint": "POST /api/Offers/generate-qr-code",
+  "examples": [
+    {
+      "name": "Generate QR Code for Offer with Default Data",
+      "request": {
+        "offerId": 1,
+        "size": 300
+      },
+      "description": "Generates a QR code for offer ID 1 with default size of 300px. The QR code will contain structured offer information including title, description, organization, validity, and location data."
+    },
+    {
+      "name": "Generate QR Code for Offer with Custom Data",
+      "request": {
+        "offerId": 1,
+        "size": 500,
+        "customData": "https://yourapp.com/offers/1?utm_source=qr"
+      },
+      "description": "Generates a QR code for offer ID 1 with custom data (URL) and size of 500px. The QR code will contain the custom URL instead of the default structured data."
+    },
+    {
+      "name": "Generate Small QR Code",
+      "request": {
+        "offerId": 2,
+        "size": 150
+      },
+      "description": "Generates a smaller QR code (150px) for offer ID 2, suitable for mobile displays or small print materials."
+    }
+  ],
+  "response_example": {
+    "qrCodeBase64": "iVBORw0KGgoAAAANSUhEUgAA...",
+    "qrCodeData": "{\"type\":\"offer\",\"offerId\":1,\"title\":\"Special Discount\",\"description\":\"Get 20% off\",\"organizationName\":\"Riyadh Municipality\",\"validUntil\":\"2024-12-31\",\"discountValue\":\"20%\",\"categoryName\":\"Food & Dining\",\"locations\":[{\"name\":\"Riyadh Mall\",\"address\":\"King Fahd Road\",\"latitude\":24.7136,\"longitude\":46.6753}],\"timestamp\":\"2024-01-15T10:30:00Z\"}",
+    "success": true,
+    "errorMessage": null,
+    "id": 1,
+    "title": "Special Discount",
+    "description": "Get 20% off on all items",
+    "name": "Special Discount Offer",
+    "categoryId": 1,
+    "categoryName": "Food & Dining",
+    "discountTypeId": 1,
+    "discountTypeName": "Percentage",
+    "discountValue": "20%",
+    "validFrom": "2024-01-01T00:00:00Z",
+    "validUntil": "2024-12-31T23:59:59Z",
+    "isCurrentlyValid": true,
+    "organizationName": "Riyadh Municipality",
+    "organizationNameEnglish": "Riyadh Region Municipality",
+    "rating": 4.5,
+    "ratingCount": 120,
+    "currentUses": 45,
+    "employeeId": null,
+    "employeeName": null,
+    "employeeNameEnglish": null,
+    "imageUrl": "https://example.com/offer-image.jpg",
+    "directionsUrl": "https://maps.google.com/...",
+    "termsAndConditions": "Valid until December 31, 2024. Cannot be combined with other offers.",
+    "createdAt": "2024-01-01T00:00:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z",
+    "isActive": true
+  },
+  "usage_notes": [
+    "The QR code data is returned as a base64-encoded PNG image string",
+    "If no customData is provided, the QR code contains structured JSON with offer information",
+    "Size parameter accepts values between 1 and 1000 pixels",
+    "The QR code can be used for sharing offers, tracking usage, or providing quick access to offer details",
+    "The response includes both the QR code image and the complete offer details for reference"
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "description": "Comprehensive test examples for all QR Code APIs",
+  "baseUrl": "https://localhost:7000/api",
+  "authentication": "No authentication required for these examples",
+  
+  "apis": {
+    "1_OfferQRCode": {
+      "name": "Generate QR Code for Offer",
+      "endpoint": "POST /api/Offers/generate-qr-code",
+      "description": "Generates QR code for a specific offer with structured offer data",
+      "examples": [
+        {
+          "name": "Basic Offer QR Code",
+          "request": {
+            "offerId": 1,
+            "size": 300
+          },
+          "expectedResponse": {
+            "qrCodeBase64": "string (base64 encoded PNG)",
+            "qrCodeData": "{\"type\":\"offer\",\"offerId\":1,\"title\":\"...\",\"description\":\"...\"}",
+            "success": true,
+            "errorMessage": null,
+            "id": 1,
+            "title": "Special Discount",
+            "description": "Get 20% off on all items",
+            "categoryName": "Food & Dining",
+            "organizationName": "Riyadh Municipality",
+            "validUntil": "2024-12-31T23:59:59Z",
+            "isCurrentlyValid": true
+          }
+        },
+        {
+          "name": "Large QR Code",
+          "request": {
+            "offerId": 2,
+            "size": 500
+          }
+        },
+        {
+          "name": "Custom Data QR Code",
+          "request": {
+            "offerId": 1,
+            "size": 300,
+            "customData": "https://yourapp.com/offers/1?utm_source=qr&user=123"
+          }
+        }
+      ]
+    },
+
+    "2_OfferShareQRCode": {
+      "name": "Generate QR Code for Offer Share",
+      "endpoint": "GET /api/QrCode/offer-share/{offerShareId}",
+      "description": "Generates QR code for a specific offer share",
+      "examples": [
+        {
+          "name": "Basic Offer Share QR Code",
+          "url": "GET /api/QrCode/offer-share/1?size=300",
+          "expectedResponse": {
+            "qrCodeBase64": "string (base64 encoded PNG)",
+            "qrCodeData": "string (offer share data)",
+            "qrCodeIdentifier": "QR123456",
+            "offerShare": {
+              "id": 1,
+              "offerId": 1,
+              "sharedByUserId": "user123",
+              "qrCodeIdentifier": "QR123456",
+              "shareToken": "token123",
+              "sharedAt": "2024-01-15T10:30:00Z"
+            },
+            "success": true,
+            "errorMessage": null
+          }
+        },
+        {
+          "name": "Small QR Code",
+          "url": "GET /api/QrCode/offer-share/2?size=150"
+        }
+      ]
+    },
+
+    "3_CustomQRCode": {
+      "name": "Generate Custom QR Code",
+      "endpoint": "POST /api/QrCode/generate",
+      "description": "Generates QR code from custom data",
+      "examples": [
+        {
+          "name": "URL QR Code",
+          "request": {
+            "data": "https://yourapp.com/offers/1",
+            "size": 300
+          },
+          "expectedResponse": {
+            "qrCodeBase64": "string (base64 encoded PNG)",
+            "qrCodeData": "https://yourapp.com/offers/1",
+            "qrCodeIdentifier": null,
+            "success": true,
+            "errorMessage": null
+          }
+        },
+        {
+          "name": "Contact Information QR Code",
+          "request": {
+            "data": "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nORG:Company Name\nTEL:+1234567890\nEMAIL:john@example.com\nEND:VCARD",
+            "size": 400
+          }
+        },
+        {
+          "name": "WiFi QR Code",
+          "request": {
+            "data": "WIFI:T:WPA;S:MyNetwork;P:password123;H:false;;",
+            "size": 250
+          }
+        },
+        {
+          "name": "SMS QR Code",
+          "request": {
+            "data": "SMSTO:+1234567890:Hello from QR code!",
+            "size": 200
+          }
+        }
+      ]
+    },
+
+    "4_QRCodeImageFile": {
+      "name": "Get QR Code as Image File (Offer Share)",
+      "endpoint": "GET /api/QrCode/image/{offerShareId}",
+      "description": "Returns QR code as downloadable PNG file for offer share",
+      "examples": [
+        {
+          "name": "Download QR Code Image",
+          "url": "GET /api/QrCode/image/1?size=300",
+          "response": "Binary PNG file download",
+          "headers": {
+            "Content-Type": "image/png",
+            "Content-Disposition": "attachment; filename=qr-code-QR123456.png"
+          }
+        },
+        {
+          "name": "Large QR Code Image",
+          "url": "GET /api/QrCode/image/2?size=500"
+        }
+      ]
+    },
+
+    "5_QRCodeImageFromData": {
+      "name": "Get QR Code as Image File (Custom Data)",
+      "endpoint": "POST /api/QrCode/image",
+      "description": "Returns QR code as downloadable PNG file from custom data",
+      "examples": [
+        {
+          "name": "Download Custom QR Code",
+          "request": {
+            "data": "https://yourapp.com/offers/1",
+            "size": 300
+          },
+          "response": "Binary PNG file download",
+          "headers": {
+            "Content-Type": "image/png",
+            "Content-Disposition": "attachment; filename=qr-code.png"
+          }
+        },
+        {
+          "name": "Download Contact QR Code",
+          "request": {
+            "data": "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nTEL:+1234567890\nEND:VCARD",
+            "size": 400
+          }
+        }
+      ]
+    }
+  },
+
+  "curlExamples": {
+    "1_GenerateOfferQRCode": [
+      {
+        "name": "Basic Offer QR Code",
+        "command": "curl -X POST \"https://localhost:7000/api/Offers/generate-qr-code\" -H \"Content-Type: application/json\" -d '{\"offerId\": 1, \"size\": 300}'"
+      },
+      {
+        "name": "Custom Data QR Code",
+        "command": "curl -X POST \"https://localhost:7000/api/Offers/generate-qr-code\" -H \"Content-Type: application/json\" -d '{\"offerId\": 1, \"size\": 500, \"customData\": \"https://yourapp.com/offers/1\"}'"
+      }
+    ],
+    "2_GenerateOfferShareQRCode": [
+      {
+        "name": "Offer Share QR Code",
+        "command": "curl -X GET \"https://localhost:7000/api/QrCode/offer-share/1?size=300\""
+      }
+    ],
+    "3_GenerateCustomQRCode": [
+      {
+        "name": "URL QR Code",
+        "command": "curl -X POST \"https://localhost:7000/api/QrCode/generate\" -H \"Content-Type: application/json\" -d '{\"data\": \"https://yourapp.com/offers/1\", \"size\": 300}'"
+      },
+      {
+        "name": "Contact QR Code",
+        "command": "curl -X POST \"https://localhost:7000/api/QrCode/generate\" -H \"Content-Type: application/json\" -d '{\"data\": \"BEGIN:VCARD\\nVERSION:3.0\\nFN:John Doe\\nTEL:+1234567890\\nEND:VCARD\", \"size\": 400}'"
+      }
+    ],
+    "4_DownloadQRCodeImage": [
+      {
+        "name": "Download Offer Share QR Code",
+        "command": "curl -X GET \"https://localhost:7000/api/QrCode/image/1?size=300\" -o qr-code-offer-share.png"
+      }
+    ],
+    "5_DownloadCustomQRCodeImage": [
+      {
+        "name": "Download Custom QR Code",
+        "command": "curl -X POST \"https://localhost:7000/api/QrCode/image\" -H \"Content-Type: application/json\" -d '{\"data\": \"https://yourapp.com/offers/1\", \"size\": 300}' -o qr-code-custom.png"
+      }
+    ]
+  },
+
+  "postmanCollection": {
+    "name": "QR Code APIs Collection",
+    "requests": [
+      {
+        "name": "Generate Offer QR Code",
+        "method": "POST",
+        "url": "{{baseUrl}}/Offers/generate-qr-code",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "offerId": 1,
+          "size": 300
+        }
+      },
+      {
+        "name": "Generate Offer Share QR Code",
+        "method": "GET",
+        "url": "{{baseUrl}}/QrCode/offer-share/1?size=300"
+      },
+      {
+        "name": "Generate Custom QR Code",
+        "method": "POST",
+        "url": "{{baseUrl}}/QrCode/generate",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "data": "https://yourapp.com/offers/1",
+          "size": 300
+        }
+      },
+      {
+        "name": "Download QR Code Image",
+        "method": "GET",
+        "url": "{{baseUrl}}/QrCode/image/1?size=300"
+      },
+      {
+        "name": "Download Custom QR Code Image",
+        "method": "POST",
+        "url": "{{baseUrl}}/QrCode/image",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "data": "https://yourapp.com/offers/1",
+          "size": 300
+        }
+      }
+    ],
+    "variables": {
+      "baseUrl": "https://localhost:7000/api"
+    }
+  },
+
+  "testScenarios": {
+    "1_ValidationTests": [
+      {
+        "name": "Invalid Offer ID",
+        "request": {
+          "offerId": 0,
+          "size": 300
+        },
+        "expectedStatus": 400,
+        "expectedError": "OfferId must be greater than 0"
+      },
+      {
+        "name": "Invalid Size",
+        "request": {
+          "offerId": 1,
+          "size": 0
+        },
+        "expectedStatus": 400,
+        "expectedError": "Size must be between 1 and 1000"
+      },
+      {
+        "name": "Empty Custom Data",
+        "request": {
+          "data": "",
+          "size": 300
+        },
+        "expectedStatus": 400,
+        "expectedError": "Data cannot be empty"
+      }
+    ],
+    "2_NotFoundTests": [
+      {
+        "name": "Non-existent Offer",
+        "request": {
+          "offerId": 99999,
+          "size": 300
+        },
+        "expectedStatus": 404,
+        "expectedError": "Offer not found or inactive"
+      },
+      {
+        "name": "Non-existent Offer Share",
+        "url": "GET /api/QrCode/offer-share/99999",
+        "expectedStatus": 404,
+        "expectedError": "Offer share not found"
+      }
+    ],
+    "3_PerformanceTests": [
+      {
+        "name": "Large QR Code Generation",
+        "request": {
+          "data": "https://yourapp.com/offers/1",
+          "size": 1000
+        },
+        "expectedMaxResponseTime": "2 seconds"
+      },
+      {
+        "name": "Multiple Concurrent Requests",
+        "description": "Send 10 concurrent requests to generate QR codes",
+        "expectedBehavior": "All requests should complete successfully"
+      }
+    ]
+  },
+
+  "usageExamples": {
+    "1_MobileAppIntegration": {
+      "description": "How to integrate QR code generation in a mobile app",
+      "code": "// Generate QR code for offer sharing\nconst response = await fetch('/api/Offers/generate-qr-code', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ offerId: 1, size: 300 })\n});\nconst qrData = await response.json();\n// Display QR code: qrData.qrCodeBase64"
+    },
+    "2_WebAppIntegration": {
+      "description": "How to display QR codes in a web application",
+      "code": "// Display QR code in HTML\n<img src=\"data:image/png;base64,\" + qrData.qrCodeBase64 + \"\" alt=\"QR Code\" />"
+    },
+    "3_FileDownload": {
+      "description": "How to download QR code as file",
+      "code": "// Download QR code as PNG file\nconst response = await fetch('/api/QrCode/image/1?size=300');\nconst blob = await response.blob();\nconst url = window.URL.createObjectURL(blob);\nconst a = document.createElement('a');\na.href = url;\na.download = 'qr-code.png';\na.click();"
+    }
+  },
+
+  "notes": [
+    "All QR codes are generated as PNG images",
+    "Base64 responses can be directly used in HTML img tags",
+    "File downloads return binary PNG data",
+    "QR code size is in pixels (1-1000 range)",
+    "Custom data can be URLs, contact info, WiFi credentials, etc.",
+    "Offer QR codes contain structured JSON with offer information",
+    "All APIs follow the same MediatR pattern as other endpoints",
+    "Error responses include proper HTTP status codes and messages"
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "examples": [
+    {
+      "description": "Get offers filtered by nearest location from Jeddah",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 10,
+          "count": 10,
+          "getAll": false
+        },
+        "categoryId": null,
+        "userId": "user123",
+        "userLatitude": 21.4858,
+        "userLongitude": 39.1925,
+        "filterType": 1
+      },
+      "filterTypeDescription": "1 = NearestLocation"
+    },
+    {
+      "description": "Get offers filtered by last inserted with category filter",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 5,
+          "count": 5,
+          "getAll": false
+        },
+        "categoryId": 4,
+        "userId": "user456",
+        "userLatitude": null,
+        "userLongitude": null,
+        "filterType": 2
+      },
+      "filterTypeDescription": "2 = LastInserted"
+    },
+    {
+      "description": "Get offers filtered by max used (most popular)",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 8,
+          "count": 8,
+          "getAll": false
+        },
+        "categoryId": null,
+        "userId": "user789",
+        "userLatitude": 24.7136,
+        "userLongitude": 46.6753,
+        "filterType": 3
+      },
+      "filterTypeDescription": "3 = MaxUsed"
+    },
+    {
+      "description": "Get offers filtered by higher evaluation",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 6,
+          "count": 6,
+          "getAll": false
+        },
+        "categoryId": 2,
+        "userId": "user101",
+        "userLatitude": 26.4207,
+        "userLongitude": 50.0888,
+        "filterType": 4
+      },
+      "filterTypeDescription": "4 = HigherEvaluation"
+    },
+    {
+      "description": "Get all offers filtered by nearest location (getAll = true)",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 0,
+          "count": 0,
+          "getAll": true
+        },
+        "categoryId": null,
+        "userId": "user202",
+        "userLatitude": 21.4858,
+        "userLongitude": 39.1925,
+        "filterType": 1
+      },
+      "filterTypeDescription": "1 = NearestLocation (all results)"
+    },
+    {
+      "description": "Get offers with no specific filter (default ordering by Id)",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 10,
+          "count": 10,
+          "getAll": false
+        },
+        "categoryId": null,
+        "userId": "user404",
+        "userLatitude": null,
+        "userLongitude": null,
+        "filterType": 0
+      },
+      "filterTypeDescription": "0 = NoFilter (default ordering)"
+    },
+    {
+      "description": "Test with invalid coordinates (0,0) - distanceInKm should be null",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 5,
+          "count": 5,
+          "getAll": false
+        },
+        "categoryId": 4,
+        "userId": "user123",
+        "userLatitude": 0,
+        "userLongitude": 0,
+        "filterType": 3
+      },
+      "expectedResult": "distanceInKm should be null for all offers since coordinates are (0,0)",
+      "filterTypeDescription": "3 = MaxUsed with invalid coordinates"
+    }
+  ],
+  "filterTypes": {
+    "0": "NoFilter - No specific ordering (default by Id)",
+    "1": "NearestLocation - Orders offers by distance from user location",
+    "2": "LastInserted - Orders offers by creation date (newest first)",
+    "3": "MaxUsed - Orders offers by CurrentUses field (most used first)",
+    "4": "HigherEvaluation - Orders offers by Rating field (highest first)"
+  },
+  "notes": [
+    "All filter types support optional categoryId filtering",
+    "NearestLocation filter requires userLatitude and userLongitude for accurate distance calculation",
+    "MaxUsed filter uses CurrentUses field from Offer table (most used first)",
+    "HigherEvaluation uses Rating field from Offer table (highest rating first)",
+    "Response structure is identical to get-paginated-offers API",
+    "When userLatitude and userLongitude are both 0, distanceInKm will be null (no distance calculation)",
+    "Valid coordinates are required for distance calculation and NearestLocation filtering"
+  ]
+}

@@ -1,0 +1,216 @@
+{
+  "testScenarios": [
+    {
+      "scenario": "Test NoFilter - Default Ordering",
+      "description": "Get offers with no specific ordering (default by Id)",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 5,
+          "count": 5,
+          "getAll": false
+        },
+        "categoryId": null,
+        "userId": "user404",
+        "userLatitude": null,
+        "userLongitude": null,
+        "filterType": 0
+      },
+      "expectedResult": "Should return offers ordered by Id (ascending order)",
+      "testData": "Default ordering by Id field (1, 2, 3, 4, 5...)"
+    },
+    {
+      "scenario": "Test MaxUsed Filter - Most Popular Offers",
+      "description": "Get offers ordered by CurrentUses field (most used first)",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 5,
+          "count": 5,
+          "getAll": false
+        },
+        "categoryId": null,
+        "userId": "user123",
+        "userLatitude": null,
+        "userLongitude": null,
+        "filterType": 3
+      },
+      "expectedResult": "Should return offers with highest CurrentUses values first (e.g., Offer ID 7 with 200 uses, then Offer ID 1 with 150 uses)",
+      "testData": {
+        "offerId7": "CurrentUses: 200 (should be first)",
+        "offerId1": "CurrentUses: 150 (should be second)",
+        "offerId12": "CurrentUses: 156 (should be third)",
+        "offerId4": "CurrentUses: 120 (should be fourth)",
+        "offerId9": "CurrentUses: 95 (should be fifth)"
+      }
+    },
+    {
+      "scenario": "Test HigherEvaluation Filter - Best Rated Offers",
+      "description": "Get offers ordered by Rating field (highest rating first)",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 5,
+          "count": 5,
+          "getAll": false
+        },
+        "categoryId": null,
+        "userId": "user456",
+        "userLatitude": null,
+        "userLongitude": null,
+        "filterType": 4
+      },
+      "expectedResult": "Should return offers with highest Rating values first (e.g., Offer ID 5 with 4.9 rating, then Offer ID 1 with 4.8 rating)",
+      "testData": {
+        "offerId5": "Rating: 4.9 (should be first)",
+        "offerId1": "Rating: 4.8 (should be second)",
+        "offerId11": "Rating: 4.7 (should be third)",
+        "offerId9": "Rating: 4.6 (should be fourth)",
+        "offerId3": "Rating: 4.5 (should be fifth)"
+      }
+    },
+    {
+      "scenario": "Test MaxUsed Filter with Category Filter",
+      "description": "Get most used offers in a specific category",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 3,
+          "count": 3,
+          "getAll": false
+        },
+        "categoryId": 4,
+        "userId": "user789",
+        "userLatitude": null,
+        "userLongitude": null,
+        "filterType": 3
+      },
+      "expectedResult": "Should return only offers from category 4, ordered by CurrentUses",
+      "testData": "Filter by CategoryId = 4, then order by CurrentUses descending"
+    },
+    {
+      "scenario": "Test HigherEvaluation Filter with Category Filter",
+      "description": "Get best rated offers in a specific category",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 3,
+          "count": 3,
+          "getAll": false
+        },
+        "categoryId": 2,
+        "userId": "user101",
+        "userLatitude": null,
+        "userLongitude": null,
+        "filterType": 4
+      },
+      "expectedResult": "Should return only offers from category 2, ordered by Rating",
+      "testData": "Filter by CategoryId = 2, then order by Rating descending"
+    },
+    {
+      "scenario": "Test LastInserted Filter",
+      "description": "Get newest offers first",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 5,
+          "count": 5,
+          "getAll": false
+        },
+        "categoryId": null,
+        "userId": "user202",
+        "userLatitude": null,
+        "userLongitude": null,
+        "filterType": 2
+      },
+      "expectedResult": "Should return offers ordered by CreatedAt descending (newest first)",
+      "testData": "Order by CreatedAt field descending"
+    },
+    {
+      "scenario": "Test NearestLocation Filter from Jeddah",
+      "description": "Get offers ordered by distance from Jeddah",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 5,
+          "count": 5,
+          "getAll": false
+        },
+        "categoryId": null,
+        "userId": "user303",
+        "userLatitude": 21.4858,
+        "userLongitude": 39.1925,
+        "filterType": 1
+      },
+      "expectedResult": "Should return offers ordered by distance from Jeddah coordinates",
+      "testData": "User location: Jeddah (21.4858, 39.1925), order by calculated distance"
+    },
+    {
+      "scenario": "Test MaxUsed Filter with User Location",
+      "description": "Get most used offers with distance calculation",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 5,
+          "count": 5,
+          "getAll": false
+        },
+        "categoryId": null,
+        "userId": "user123",
+        "userLatitude": 24.7136,
+        "userLongitude": 46.6753,
+        "filterType": 3
+      },
+      "expectedResult": "Should return most used offers with distanceInKm calculated",
+      "testData": "Order by CurrentUses, but also calculate distance from Riyadh (24.7136, 46.6753)"
+    },
+    {
+      "scenario": "Test HigherEvaluation Filter with User Location",
+      "description": "Get best rated offers with distance calculation",
+      "request": {
+        "paginationInput": {
+          "currentPage": 1,
+          "takenRows": 5,
+          "count": 5,
+          "getAll": false
+        },
+        "categoryId": null,
+        "userId": "user456",
+        "userLatitude": 26.4207,
+        "userLongitude": 50.0888,
+        "filterType": 4
+      },
+      "expectedResult": "Should return best rated offers with distanceInKm calculated",
+      "testData": "Order by Rating, but also calculate distance from Dammam (26.4207, 50.0888)"
+    }
+  ],
+  "testDataSummary": {
+    "currentUses": {
+      "highest": "Offer ID 7: 200 uses",
+      "second": "Offer ID 12: 156 uses", 
+      "third": "Offer ID 1: 150 uses",
+      "fourth": "Offer ID 4: 120 uses",
+      "fifth": "Offer ID 9: 95 uses"
+    },
+    "ratings": {
+      "highest": "Offer ID 5: 4.9 rating",
+      "second": "Offer ID 1: 4.8 rating",
+      "third": "Offer ID 11: 4.7 rating", 
+      "fourth": "Offer ID 9: 4.6 rating",
+      "fifth": "Offer ID 3: 4.5 rating"
+    },
+    "locations": {
+      "jeddah": "21.4858, 39.1925",
+      "riyadh": "24.7136, 46.6753", 
+      "dammam": "26.4207, 50.0888"
+    }
+  },
+  "instructions": [
+    "1. Run UpdateOfferTestData.sql to populate CurrentUses and Rating fields",
+    "2. Test each scenario using the provided request examples",
+    "3. Verify that MaxUsed filter returns offers ordered by CurrentUses descending",
+    "4. Verify that HigherEvaluation filter returns offers ordered by Rating descending",
+    "5. Check that distanceInKm is calculated correctly for location-based tests",
+    "6. Verify that IsSaved status is returned correctly for each user"
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "apiEndpoint": "POST /api/Offers/get-offer-sharing-methods",
+  "description": "Get all sharing methods available for a specific offer",
+  "examples": [
+    {
+      "description": "Get sharing methods for offer ID 1",
+      "request": {
+        "offerId": 1
+      },
+      "expectedResult": "Should return all sharing methods associated with offer ID 1"
+    },
+    {
+      "description": "Get sharing methods for offer ID 5",
+      "request": {
+        "offerId": 5
+      },
+      "expectedResult": "Should return all sharing methods associated with offer ID 5"
+    },
+    {
+      "description": "Get sharing methods for offer ID 10",
+      "request": {
+        "offerId": 10
+      },
+      "expectedResult": "Should return all sharing methods associated with offer ID 10"
+    },
+    {
+      "description": "Test with non-existent offer ID",
+      "request": {
+        "offerId": 999
+      },
+      "expectedResult": "Should return error - offer not found"
+    },
+    {
+      "description": "Test with invalid offer ID (negative)",
+      "request": {
+        "offerId": -1
+      },
+      "expectedResult": "Should return validation error - OfferId must be greater than 0"
+    }
+  ],
+  "responseStructure": {
+    "offerId": "ID of the offer",
+    "offerTitle": "Title of the offer",
+    "sharingMethods": [
+      {
+        "id": "Sharing method ID",
+        "name": "Sharing method name in Arabic",
+        "nameEnglish": "Sharing method name in English",
+        "iconUrl": "Icon URL for the sharing method",
+        "description": "Description of the sharing method",
+        "descriptionEnglish": "Description in English",
+        "isActive": "Whether the sharing method is active"
+      }
+    ],
+    "totalCount": "Total number of sharing methods for the offer"
+  },
+  "sampleResponse": {
+    "offerId": 1,
+    "offerTitle": "Special Discount Offer",
+    "sharingMethods": [
+      {
+        "id": 1,
+        "name": "مشاركة مع التابعين",
+        "nameEnglish": "مشاركة مع التابعين",
+        "iconUrl": "👨‍👩‍👧‍👦",
+        "description": "Share with Dependents",
+        "descriptionEnglish": "Share with Dependents",
+        "isActive": true
+      },
+      {
+        "id": 2,
+        "name": "مشاركة مع منسوبي الأمانة",
+        "nameEnglish": "مشاركة مع منسوبي الأمانة",
+        "iconUrl": "👥",
+        "description": "Share with Municipality Employees",
+        "descriptionEnglish": "Share with Municipality Employees",
+        "isActive": true
+      },
+      {
+        "id": 3,
+        "name": "مشاركة على وسائل التواصل",
+        "nameEnglish": "مشاركة على وسائل التواصل",
+        "iconUrl": "📱",
+        "description": "Share on Social Media",
+        "descriptionEnglish": "Share on Social Media",
+        "isActive": true
+      }
+    ],
+    "totalCount": 3
+  },
+  "testScenarios": [
+    {
+      "scenario": "Basic Functionality Test",
+      "steps": [
+        "1. Call API with valid offer ID",
+        "2. Verify response contains offer information",
+        "3. Verify sharing methods are returned",
+        "4. Check that totalCount matches number of sharing methods"
+      ]
+    },
+    {
+      "scenario": "Error Handling Test",
+      "steps": [
+        "1. Call API with non-existent offer ID",
+        "2. Verify error response is returned",
+        "3. Call API with invalid offer ID (negative)",
+        "4. Verify validation error is returned"
+      ]
+    },
+    {
+      "scenario": "Data Integrity Test",
+      "steps": [
+        "1. Call API with offer that has sharing methods",
+        "2. Verify all sharing method fields are populated",
+        "3. Verify only active sharing methods are returned",
+        "4. Check that Arabic and English names are provided"
+      ]
+    }
+  ],
+  "notes": [
+    "This API queries the OfferOfferSharingMethod junction table",
+    "Only active sharing methods are returned",
+    "The API validates that the offer exists and is active",
+    "Sharing methods are linked to offers through many-to-many relationship",
+    "Response includes both Arabic and English names for internationalization"
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "useOfferExamples": [
+    {
+      "description": "Use an offer for a user without specifying dependent",
+      "request": {
+        "offerId": 1,
+        "userId": "user123",
+        "dependentId": null,
+        "notes": "Used at the store location"
+      },
+      "expectedResponse": {
+        "success": true,
+        "message": "Offer used successfully",
+        "offerDetails": {
+          "offerId": 1,
+          "offerTitle": "Sample Offer",
+          "discountValue": "20%",
+          "dependentId": null,
+          "dependentRelationship": null,
+          "isUsed": true,
+          "usedAt": "2024-01-15T10:30:00Z",
+          "currentUses": 1,
+          "notes": "Used at the store location"
+        }
+      }
+    },
+    {
+      "description": "Use an offer for a specific dependent (daughter) - will auto-link if not already linked",
+      "request": {
+        "offerId": 2,
+        "userId": "user456",
+        "dependentId": 1,
+        "notes": "Used for daughter's medical checkup"
+      },
+      "expectedResponse": {
+        "success": true,
+        "message": "Offer linked to dependent and used successfully",
+        "offerDetails": {
+          "offerId": 2,
+          "offerTitle": "Medical Offer",
+          "discountValue": "15%",
+          "dependentId": 1,
+          "dependentRelationship": "أبنة",
+          "isUsed": true,
+          "usedAt": "2024-01-15T10:30:00Z",
+          "currentUses": 1,
+          "notes": "Used for daughter's medical checkup"
+        }
+      }
+    },
+    {
+      "description": "Try to use an already used offer",
+      "request": {
+        "offerId": 1,
+        "userId": "user123",
+        "dependentId": null,
+        "notes": "Trying to use again"
+      },
+      "expectedResponse": {
+        "success": false,
+        "message": "This offer has already been used"
+      }
+    },
+    {
+      "description": "Try to use an expired offer",
+      "request": {
+        "offerId": 3,
+        "userId": "user789",
+        "dependentId": null,
+        "notes": "Trying to use expired offer"
+      },
+      "expectedResponse": {
+        "success": false,
+        "message": "Offer has expired"
+      }
+    },
+    {
+      "description": "Try to use offer with wrong dependent type",
+      "request": {
+        "offerId": 4,
+        "userId": "user999",
+        "dependentId": 2,
+        "notes": "Wrong dependent type"
+      },
+      "expectedResponse": {
+        "success": false,
+        "message": "This offer is only available for a different dependent type"
+      }
+    },
+    {
+      "description": "Use an offer that's already linked to a different dependent",
+      "request": {
+        "offerId": 5,
+        "userId": "user888",
+        "dependentId": 1,
+        "notes": "Trying to use with different dependent"
+      },
+      "expectedResponse": {
+        "success": false,
+        "message": "This offer is only available for a different dependent type"
+      }
+    },
+    {
+      "description": "Use an offer that's already linked to the same dependent",
+      "request": {
+        "offerId": 6,
+        "userId": "user777",
+        "dependentId": 1,
+        "notes": "Using with correct dependent"
+      },
+      "expectedResponse": {
+        "success": true,
+        "message": "Offer used successfully",
+        "offerDetails": {
+          "offerId": 6,
+          "offerTitle": "Pre-linked Offer",
+          "discountValue": "25%",
+          "dependentId": 1,
+          "dependentRelationship": "أبنة",
+          "isUsed": true,
+          "usedAt": "2024-01-15T10:30:00Z",
+          "currentUses": 1,
+          "notes": "Using with correct dependent"
+        }
+      }
+    }
+  ]
+}
+

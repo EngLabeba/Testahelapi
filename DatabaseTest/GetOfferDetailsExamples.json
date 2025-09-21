@@ -1,0 +1,108 @@
+{
+  "examples": [
+    {
+      "description": "Get details for offer ID 1",
+      "request": {
+        "offerId": 1
+      },
+      "expectedResult": "Should return comprehensive details for offer with ID 1"
+    },
+    {
+      "description": "Get details for offer ID 5",
+      "request": {
+        "offerId": 5
+      },
+      "expectedResult": "Should return comprehensive details for offer with ID 5"
+    },
+    {
+      "description": "Get details for offer ID 10",
+      "request": {
+        "offerId": 10
+      },
+      "expectedResult": "Should return comprehensive details for offer with ID 10"
+    },
+    {
+      "description": "Test with invalid offer ID",
+      "request": {
+        "offerId": 999
+      },
+      "expectedResult": "Should return 404 or error - offer not found"
+    },
+    {
+      "description": "Test with invalid offer ID (negative)",
+      "request": {
+        "offerId": -1
+      },
+      "expectedResult": "Should return validation error - OfferId must be greater than 0"
+    }
+  ],
+  "responseStructure": {
+    "id": "Offer ID",
+    "title": "Offer title",
+    "description": "Offer description",
+    "name": "Offer name",
+    "categoryId": "Category ID",
+    "categoryName": "Category name in Arabic",
+    "categoryNameEnglish": "Category name in English",
+    "discountTypeId": "Discount type ID",
+    "discountTypeName": "Discount type name in Arabic",
+    "discountTypeNameEnglish": "Discount type name in English",
+    "discountValue": "Discount value",
+    "validFrom": "Offer validity start date",
+    "validUntil": "Offer validity end date",
+    "isCurrentlyValid": "Boolean indicating if offer is currently valid",
+    "organizationName": "Organization name in Arabic",
+    "organizationNameEnglish": "Organization name in English",
+    "rating": "Offer rating (0-5)",
+    "ratingCount": "Number of ratings",
+    "currentUses": "Number of times offer has been used",
+    "dependentId": "Dependent ID (if applicable)",
+    "dependentName": "Dependent name in Arabic",
+    "dependentNameEnglish": "Dependent name in English",
+    "imageUrl": "Offer image URL",
+    "directionsUrl": "Directions URL",
+    "termsAndConditions": "Terms and conditions",
+    "locations": [
+      {
+        "id": "Location ID",
+        "name": "Location name in Arabic",
+        "nameEnglish": "Location name in English",
+        "address": "Location address in Arabic",
+        "addressEnglish": "Location address in English",
+        "latitude": "Location latitude",
+        "longitude": "Location longitude",
+        "distanceInKm": "Distance from user (always null in this API)",
+        "directionsUrl": "Directions URL for this location"
+      }
+    ],
+    "platforms": [
+      {
+        "id": "Platform ID",
+        "name": "Platform name in Arabic",
+        "nameEnglish": "Platform name in English",
+        "iconUrl": "Platform icon URL"
+      }
+    ],
+    "sharingMethods": [
+      {
+        "id": "Sharing method ID",
+        "name": "Sharing method name in Arabic",
+        "nameEnglish": "Sharing method name in English",
+        "iconUrl": "Sharing method icon URL"
+      }
+    ],
+    "isSaved": "Always false (no user context)",
+    "distanceInKm": "Always null (no user location)",
+    "createdAt": "Offer creation date",
+    "updatedAt": "Offer last update date",
+    "isActive": "Whether offer is active"
+  },
+  "notes": [
+    "This API returns comprehensive offer details without user-specific information",
+    "No distance calculations are performed since user location is not provided",
+    "IsSaved will always be false since no user context is provided",
+    "All related entities (locations, platforms, sharing methods) are included",
+    "Validity status is calculated based on current date",
+    "Only active offers are returned"
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "saveOfferApi": {
+    "endpoint": "POST /api/Offers/save-offer",
+    "description": "Save an offer for a user",
+    "examples": [
+      {
+        "description": "Save offer ID 1 for user123",
+        "request": {
+          "offerId": 1,
+          "userId": "user123",
+          "notes": "This looks like a great offer!"
+        },
+        "expectedResult": "Should successfully save the offer and return success response"
+      },
+      {
+        "description": "Save offer ID 5 for user456 without notes",
+        "request": {
+          "offerId": 5,
+          "userId": "user456"
+        },
+        "expectedResult": "Should successfully save the offer without notes"
+      },
+      {
+        "description": "Try to save non-existent offer",
+        "request": {
+          "offerId": 999,
+          "userId": "user123"
+        },
+        "expectedResult": "Should return error - offer not found"
+      },
+      {
+        "description": "Try to save same offer twice",
+        "request": {
+          "offerId": 1,
+          "userId": "user123"
+        },
+        "expectedResult": "Should return error - offer already saved"
+      },
+      {
+        "description": "Invalid request - negative offer ID",
+        "request": {
+          "offerId": -1,
+          "userId": "user123"
+        },
+        "expectedResult": "Should return validation error"
+      },
+      {
+        "description": "Invalid request - empty user ID",
+        "request": {
+          "offerId": 1,
+          "userId": ""
+        },
+        "expectedResult": "Should return validation error"
+      }
+    ],
+    "responseStructure": {
+      "success": "Boolean indicating if save was successful",
+      "message": "Success or error message",
+      "savedOfferId": "ID of the saved offer record",
+      "offerId": "ID of the offer that was saved",
+      "userId": "ID of the user who saved the offer",
+      "savedAt": "Timestamp when the offer was saved",
+      "notes": "Optional notes provided by the user"
+    }
+  },
+  "getSavedOffersApi": {
+    "endpoint": "POST /api/Offers/get-saved-offers",
+    "description": "Get all saved offers for a user",
+    "examples": [
+      {
+        "description": "Get saved offers for user123",
+        "request": {
+          "userId": "user123"
+        },
+        "expectedResult": "Should return all offers saved by user123, ordered by saved date (newest first)"
+      },
+      {
+        "description": "Get saved offers for user456",
+        "request": {
+          "userId": "user456"
+        },
+        "expectedResult": "Should return all offers saved by user456"
+      },
+      {
+        "description": "Get saved offers for user with no saved offers",
+        "request": {
+          "userId": "newuser"
+        },
+        "expectedResult": "Should return empty list with totalCount = 0"
+      },
+      {
+        "description": "Invalid request - empty user ID",
+        "request": {
+          "userId": ""
+        },
+        "expectedResult": "Should return validation error"
+      }
+    ],
+    "responseStructure": {
+      "savedOffers": [
+        {
+          "savedOfferId": "ID of the saved offer record",
+          "offerId": "ID of the offer",
+          "offerTitle": "Title of the offer",
+          "offerDescription": "Description of the offer",
+          "offerName": "Name of the offer",
+          "categoryName": "Name of the offer category",
+          "discountValue": "Discount value",
+          "organizationName": "Organization name",
+          "imageUrl": "Offer image URL",
+          "validFrom": "Offer validity start date",
+          "validUntil": "Offer validity end date",
+          "isCurrentlyValid": "Boolean indicating if offer is currently valid",
+          "rating": "Offer rating",
+          "ratingCount": "Number of ratings",
+          "currentUses": "Number of times offer has been used",
+          "savedAt": "When the offer was saved",
+          "notes": "User's notes about the offer",
+          "isUsed": "Whether the offer has been used",
+          "usedAt": "When the offer was used (if applicable)"
+        }
+      ],
+      "totalCount": "Total number of saved offers"
+    }
+  },
+  "testScenarios": [
+    {
+      "scenario": "Complete Save and Retrieve Flow",
+      "steps": [
+        "1. Save offer ID 1 for user123",
+        "2. Save offer ID 5 for user123", 
+        "3. Get saved offers for user123",
+        "4. Verify both offers are returned in the list"
+      ]
+    },
+    {
+      "scenario": "Duplicate Save Prevention",
+      "steps": [
+        "1. Save offer ID 1 for user123",
+        "2. Try to save offer ID 1 for user123 again",
+        "3. Verify error is returned"
+      ]
+    },
+    {
+      "scenario": "User Isolation",
+      "steps": [
+        "1. Save offer ID 1 for user123",
+        "2. Save offer ID 2 for user456",
+        "3. Get saved offers for user123 - should only see offer ID 1",
+        "4. Get saved offers for user456 - should only see offer ID 2"
+      ]
+    }
+  ],
+  "notes": [
+    "Saved offers are ordered by saved date (newest first)",
+    "Each user can only save an offer once",
+    "Notes are optional and can be up to 500 characters",
+    "The API checks if the offer exists and is active before saving",
+    "Saved offers include full offer details for easy display"
+  ]
+}
